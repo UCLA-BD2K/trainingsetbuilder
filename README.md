@@ -23,7 +23,8 @@ from classify.models import Publication
 import urllib2, json
 
 journal = 'Bioinformatics (Oxford, England)'
-query = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term="' + journal + '"[Journal]&retmode=json'
+count = 5000
+query = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term="' + journal + '"[Journal]&retmode=json&retmax=' + str(count)
 
 response = urllib2.urlopen(query).read()
 data = json.loads(response)
