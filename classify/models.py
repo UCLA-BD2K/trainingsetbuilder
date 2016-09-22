@@ -6,6 +6,8 @@ from django.db import models
 class Publication(models.Model):
 	pmid = models.CharField(max_length=10, primary_key=True)
 	classification = models.IntegerField(default=-1)
+	journal = models.CharField(max_length=40, default="unknown")
+	fulltextviewed = models.IntegerField(default=0)
 	# -1 unclassified
 	# 0 no tool
 	# 1 tool

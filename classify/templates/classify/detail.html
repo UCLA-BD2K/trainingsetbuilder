@@ -1,8 +1,36 @@
-<h1>{{ title }}</h1>
-<p>{{ abstract }}</p>
-<p><a href="{{ link }}">{{ link }}</a></p>
-<p><a href="tool">TOOL</a></p>
-<p><a href="not">NOT A TOOL</a></p>
-<p><a href="ambiguous">AMBIGUOUS</a></p>
-<p><a href="/classify/next">SKIP</a></p>
-
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/mark.js/8.4.0/jquery.mark.min.js"></script>
+        <script>
+            function call_counter() {
+                $.get('fulltextviewed', function (data) {
+                });
+            }
+                        $(".abstract").mark("a", {
+                    "element": "span",
+                    "className": "highlight"
+                });
+            $(document).ready(function(){
+                var regex = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
+                $("#abstract").markRegExp(regex);
+                $(".abstract").mark("a", {
+                    "element": "span",
+                    "className": "highlight"
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>{{ title }}</h1>
+        <div class='abstract'>
+        <p id='abstract' class='abstract'>{{ abstract }}</p>
+        </div>
+        <p><a href="{{ link }}" target="_blank" onclick="call_counter();">{{ link }}</a></p>
+        <p><a href="tool">TOOL</a></p>
+        <p><a href="not">NOT A TOOL</a></p>
+        <p><a href="ambiguous">AMBIGUOUS</a></p>
+        <p><a href="/classify/next">SKIP</a></p>
+    </body>
+</html>

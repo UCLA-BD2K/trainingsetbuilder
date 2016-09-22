@@ -22,7 +22,9 @@ def titleDoiFromPmid(pmid):
 
 def bodyFromAbstract(abstract):
     result = re.search(r"Author information: \n((.+)\n)+\n(((.+)\n)+)", abstract, re.M)
-    return result.group(3)
+    try:
+        return result.group(3)
+    except: return abstract
 
 def pubmedQuery(pmid):
     return urllib2.urlopen("http://www.ncbi.nlm.nih.gov/pubmed/" + str(pmid) + "?report=abstract&format=text").read()
@@ -31,7 +33,7 @@ def detail(request, pmid):
 	title, doi = titleDoiFromPmid(pmid)
 	abstract = str(bodyFromAbstract(pubmedQuery(pmid)))
 	link = "http://doi.org/" + doi
-	return render(request, 'classify/detail.html', {'title': title, 'abstract': abstract, 'link': link})
+	return render(request, 'classify/detail.html', {'title': title, 'abstract': abstract, 'link': link, 'pmid': pmid})
 
 def tool(request, pmid):
 	publication = get_object_or_404(Publication, pk=pmid)
@@ -57,3 +59,10 @@ def skip(request, pmid):
 def next(request):
 	next_pub = random.choice(get_list_or_404(Publication, classification=-1))
 	return redirect("/classify/" + next_pub.pmid)
+	
+def fulltextviewed(request, pmid):
+	print "testing..."
+	publication = get_object_or_404(Publication, pk=pmid)
+	publication.fulltextviewed = 1
+	publication.save()
+	return skip(request, pmid)

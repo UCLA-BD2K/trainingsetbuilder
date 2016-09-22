@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^(?P<pmid>[0-9]+)/not$', views.nott, name='not'),
 	url(r'^(?P<pmid>[0-9]+)/ambiguous$', views.ambiguous, name='ambiguous'),
 	url(r'^next/$', views.next, name='next'),
+	url(r'^(?P<pmid>[0-9]+)/fulltextviewed$', views.fulltextviewed, name='fulltextviewed'),
 ]
