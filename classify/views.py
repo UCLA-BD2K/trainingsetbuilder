@@ -61,8 +61,13 @@ def next(request):
 	return redirect("/classify/" + next_pub.pmid)
 	
 def fulltextviewed(request, pmid):
-	print "testing..."
 	publication = get_object_or_404(Publication, pk=pmid)
 	publication.fulltextviewed = 1
+	publication.save()
+	return skip(request, pmid)
+
+def settoolname(request, pmid, toolname):
+	publication = get_object_or_404(Publication, pk=pmid)
+	publication.toolname = toolname
 	publication.save()
 	return skip(request, pmid)
