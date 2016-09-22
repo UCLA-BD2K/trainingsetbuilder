@@ -33,22 +33,22 @@ def detail(request, pmid):
 	link = "http://doi.org/" + doi
 	return render(request, 'classify/detail.html', {'title': title, 'abstract': abstract, 'link': link})
 
-def nextPmid():
-	return "27649575"
-
 def tool(request, pmid):
 	publication = get_object_or_404(Publication, pk=pmid)
 	publication.classification = 1
+	publication.save()
 	return redirect("/classify/next/")
 
 def nott(request, pmid):
 	publication = get_object_or_404(Publication, pk=pmid)
 	publication.classification = 0
+	publication.save()
 	return redirect("/classify/next/")
 
 def ambiguous(request, pmid):
 	publication = get_object_or_404(Publication, pk=pmid)
 	publication.classification = 2
+	publication.save()
 	return redirect("/classify/next/")
 
 def skip(request, pmid):
