@@ -16,3 +16,19 @@ python manage.py runserver
 Find a tool to classify on localhost:8000/classify/next
 
 View database at localhost:8000/admin
+
+How to add a bunch of new publications to the database(example):
+```python
+from classify.models import Publication
+import urllib2, json
+
+journal = 'Bioinformatics (Oxford, England)'
+query = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term="' + journal + '"[Journal]&retmode=json'
+
+response = urllib2.urlopen(query).read()
+data = json.loads(response)
+idlist = data["esearchresult"]["idlist"]
+for pm_id in idlist:
+	p = Publication(pmid=pm_id, classification=-1)
+	p.save()
+```
