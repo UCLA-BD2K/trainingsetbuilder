@@ -7,7 +7,12 @@ import urllib2, json, re, random
 from .models import Publication
 
 def index(request):
-	return HttpResponse("You're at the classify index.")
+	total = len(Publication.objects.all())
+	unclassified = len(get_list_or_404(Publication, classification=-1))
+	tools = len(get_list_or_404(Publication, classification=1))
+	nottools = len(get_list_or_404(Publication, classification=0))
+	ambiguous = len(get_list_or_404(Publication, classification=2))
+	return render(request, 'classify/summary.html', {'total': total, 'unclassified': unclassified, 'tools': tools, 'nottools': nottools, 'ambiguous': ambiguous})
 
 def titleDoiFromPmid(pmid):
 	response =  urllib2.urlopen("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&rettype=abstract&id=" + str(pmid)).read()
