@@ -22,6 +22,8 @@
             });
             function getSelectionText() {
                 var text = "";
+                if (document.getElementById('toolfield').value != "")
+                	return document.getElementById('toolfield').value;
                 if (window.getSelection) {
                     text = window.getSelection().toString();
                 } else if (document.selection && document.selection.type != "Control") {
@@ -37,7 +39,7 @@
                     "element": "span",
                     "className": "highlight"
                 });
-            function mouseUp() {
+            function toolChange() {
                 document.getElementById('toollink').innerHTML = '<a href="tool" onclick="set_name();">TOOL</a> Tool name: <b>'+getSelectionText()+'</b>';
             }
             function set_name() {
@@ -49,12 +51,13 @@
         </script>
     </head>
     <body>
-        <h1 onmouseup="mouseUp();">{{ title }}</h1>
+        <h1 onmouseup="toolChange();">{{ title }}</h1>
         <div class='abstract'>
-        <p id='abstract' class='abstract' onmouseup="mouseUp();">{{ abstract }}</p>
+        <p id='abstract' class='abstract' onmouseup="toolChange();">{{ abstract }}</p>
         </div>
         <p><a href="{{ link }}" target="_blank" onclick="call_counter();">{{ link }}</a></p>
-        <p id='toollink'><a href="tool" onclick="set_name();">TOOL</a> (Please highlight tool name on page)</p>
+        <p id='toollink'><a href="tool" onclick="set_name();">TOOL</a> (Please highlight tool name on page, or enter it below)</p>
+        <p><input id="toolfield" type="text" onchange="toolChange();" value=""></p>
         <p><a href="not">NOT A TOOL</a></p>
         <p><a href="ambiguous">AMBIGUOUS</a></p>
         <p><a href="/classify/next">SKIP</a></p>

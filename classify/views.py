@@ -22,8 +22,10 @@ def titleDoiFromPmid(pmid):
 	for id in data["result"][pmid]["articleids"]:
 		if id["idtype"] == "doi":
 			doi = id["value"]
-
-	return str(title), str(doi)
+	try:
+		return str(title), str(doi)
+	except:
+		return title, str(doi)
 
 def bodyFromAbstract(abstract):
     result = re.search(r"Author information: \n((.+)\n)+\n(((.+)\n)+)", abstract, re.M)
