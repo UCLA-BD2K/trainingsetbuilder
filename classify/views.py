@@ -48,6 +48,31 @@ def tool(request, pmid):
 	publication.save()
 	return redirect("/classify/next/")
 
+def data(request):
+	pubs = get_list_or_404(Publication)
+
+	tools = []
+	not_tools = []
+	ambiguous = []
+
+	for p in pubs:
+		publication = {}
+		publication["pmid"] = p.pmid
+		publication["journal"] = p.journal
+		publication["fulltextviewed"] = p.fulltextviewed
+		if p.toolname != "unknown":
+			publication["toolname"] = p.toolname
+		if p.classification == 0:
+			not_tools.append(publication)
+		if p.classification == 1:
+			tools.append(publication)
+		if p.classification == 2:
+			ambiguous.append(publication)
+
+	data = { "tools":tools, "not tools":not_tools, "ambiguous":ambiguous }
+
+	return HttpResponse(json.dumps(data))
+
 def nott(request, pmid):
 	publication = get_object_or_404(Publication, pk=pmid)
 	publication.classification = 0
