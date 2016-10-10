@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/mark.js/8.4.0/jquery.mark.min.js"></script>
+        <script>
+            function call_counter() {
+                $.get('fulltextviewed', function (data) {
+                });
+            }
+                        $(".abstract").mark("a", {
+                    "element": "span",
+                    "className": "highlight"
+                });
+            $(document).ready(function(){
+                var regex = /[-a-zA-Z0-9@:%_\+.~#?&\/\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)?/gi;
+                $("#abstract").markRegExp(regex);
+                $(".abstract").mark("a", {
+                    "element": "span",
+                    "className": "highlight"
+                });
+            });
+            function getSelectionText() {
+                var text = "";
+                if (document.getElementById('toolfield').value != "")
+                	return document.getElementById('toolfield').value;
+                if (window.getSelection) {
+                    text = window.getSelection().toString();
+                } else if (document.selection && document.selection.type != "Control") {
+                    text = document.selection.createRange().text;
+                }
+                return text;
+            }
+            function set_name() {
+                $.get('setname/'+getSelectionText, function (data) {
+                });
+            }
+                        $(".abstract").mark("a", {
+                    "element": "span",
+                    "className": "highlight"
+                });
+            function toolChange() {
+                document.getElementById('toollink').innerHTML = '<a href="tool" onclick="set_name();">TOOL</a> Tool name: <b>'+getSelectionText()+'</b>';
+            }
+            function set_name() {
+                if(getSelectionText().length <= 0)
+                    return;
+                $.get('settoolname/'+getSelectionText(), function (data) {
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <h1 onmouseup="toolChange();">{{ title }}</h1>
+        <div class='abstract'>
+        <p id='abstract' class='abstract' onmouseup="toolChange();">{{ abstract }}</p>
+        </div>
+        <p><a href="{{ link }}" target="_blank" onclick="call_counter();">{{ link }}</a></p>
+        <p id='toollink'><a href="tool" onclick="set_name();">TOOL</a> (Please highlight tool name on page)</p>
+        <p><input id="toolfield" type="text" onchange="toolChange();" value=""></p>
+        <p><a href="not">NOT A TOOL</a></p>
+        <p><a href="ambiguous">AMBIGUOUS</a></p>
+        <p><a href="/classify/next">SKIP</a></p>
+    </body>
+</html>
